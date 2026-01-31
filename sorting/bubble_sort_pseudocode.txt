@@ -1,0 +1,79 @@
+CLASS BubbleSort
+    --------------------------------------------------
+    // This class is responsible for sorting a list
+    // of values using the Bubble Sort algorithm
+    --------------------------------------------------
+
+    PRIVATE dataList
+        // Stores the list of values to be sorted
+
+    --------------------------------------------------
+    METHOD Constructor(inputList)
+        // Save the input list inside the class
+        dataList ← inputList
+    END METHOD
+    --------------------------------------------------
+
+    METHOD sort()
+        --------------------------------------------------
+        // This method performs the Bubble Sort
+        // It repeatedly compares neighboring elements
+        // and swaps them if they are in the wrong order
+        --------------------------------------------------
+
+        n ← length of dataList
+
+        // Outer loop controls the number of passes
+        FOR pass FROM 0 TO n - 2
+            --------------------------------------------------
+            // After each pass, the largest value
+            // moves to the end of the unsorted section
+            --------------------------------------------------
+
+            swapped ← FALSE
+                // Tracks whether any swap happens
+                // If no swap occurs, the list is already sorted
+
+            // Inner loop compares neighboring elements
+            FOR index FROM 0 TO n - pass - 2
+
+                IF dataList[index] > dataList[index + 1] THEN
+                    // If two neighbors are in the wrong order,
+                    // swap them
+                    CALL swap(index, index + 1)
+
+                    swapped ← TRUE
+                END IF
+
+            END FOR
+
+            IF swapped = FALSE THEN
+                --------------------------------------------------
+                // No swaps in this pass means the list
+                // is already sorted, so we stop early
+                --------------------------------------------------
+                BREAK
+            END IF
+
+        END FOR
+    END METHOD
+    --------------------------------------------------
+
+    METHOD swap(i, j)
+        --------------------------------------------------
+        // This method swaps two values in the list
+        --------------------------------------------------
+
+        temp ← dataList[i]
+        dataList[i] ← dataList[j]
+        dataList[j] ← temp
+
+    END METHOD
+    --------------------------------------------------
+
+    METHOD getSortedList()
+        // Returns the sorted list
+        RETURN dataList
+    END METHOD
+
+END CLASS
