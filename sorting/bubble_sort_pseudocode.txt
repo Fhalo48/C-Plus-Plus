@@ -1,5 +1,6 @@
 CLASS BubbleSort
-    --------------------------------------------------
+
+   --------------------------------------------------
     // This class is responsible for sorting a list
     // of values using the Bubble Sort algorithm
     --------------------------------------------------
