@@ -1,64 +1,50 @@
-// Class that encapsulates bubble sort behavior
-class Sorter
-    // Constructor accepts an optional comparator function
-    // comparator(a, b) should return:
-    //   negative if a < b, zero if a == b, positive if a > b
-    // If no comparator is provided, use default ascending comparator
-    constructor(comparator = null)
-        if comparator is null
-            this.comparator = this.defaultComparator
-        else
-            this.comparator = comparator
+// CLASS: BubbleSorter
+// PURPOSE: A reusable container for sorting logic
+CLASS BubbleSorter
 
-    // Default comparator for ascending numeric or lexicographic order
-    function defaultComparator(a, b)
-        if a < b then return -1
-        if a > b then return 1
-        return 0
+    // FUNCTION: sort
+    // INPUT: An array of numbers called 'data'
+    // OUTPUT: The same array, sorted in ascending order
+    METHOD sort(data)
+        
+        // Determine the length of the list once
+        SET n TO length of data
+        
+        // OUTER LOOP: Controls how many times we pass through the list.
+        // After each pass, the largest unsorted element "bubbles" to the end.
+        FOR i FROM 0 TO n - 1
+            
+            // OPTIMIZATION: Track if a swap happened. 
+            // If no swaps occur during a pass, the list is already sorted!
+            SET swapped TO FALSE
 
-    // Swap helper swaps elements at indices i and j in array arr
-    function swap(arr, i, j)
-        temp = arr[i]
-        arr[i] = arr[j]
-        arr[j] = temp
+            // INNER LOOP: Compares adjacent elements.
+            // We subtract 'i' because the last 'i' elements are already in place.
+            FOR j FROM 0 TO n - i - 2
+                
+                // Compare the current item with the next one
+                IF data[j] > data[j + 1] THEN
+                    
+                    // SWAP: If they are in the wrong order, flip them
+                    SET temp TO data[j]
+                    SET data[j] TO data[j + 1]
+                    SET data[j + 1] TO temp
+                    
+                    // Mark that we made a change this pass
+                    SET swapped TO TRUE
+                    
+                END IF
+            END FOR
 
-    // bubbleSort sorts arr in-place
-    // Parameters:
-    //   arr: list or array to sort
-    //   startIndex: optional start index (default 0)
-    //   endIndex: optional end index (default arr.length - 1)
-    // Returns:
-    //   arr (sorted in-place) for convenience
-    function bubbleSort(arr, startIndex = 0, endIndex = null)
-        // If endIndex not provided, set to last index
-        if endIndex is null
-            endIndex = length(arr) - 1
+            // If no two elements were swapped by the inner loop, break early
+            IF swapped IS FALSE THEN
+                BREAK OUTER LOOP
+            END IF
 
-        // Edge cases: empty array or single element
-        if startIndex >= endIndex
-            return arr
+        END FOR
 
-        // Outer loop: we will make multiple passes
-        // After each pass the largest unsorted element "bubbles" to its correct place
-        n = endIndex - startIndex + 1
+        RETURN data
+        
+    END METHOD
 
-        // Optimization: track whether any swaps happened in a pass
-        // If no swaps, the array is already sorted and we can stop early
-        for pass from 0 to n - 2
-            swapped = false
-
-            // Inner loop: compare adjacent pairs up to the last unsorted element
-            // Each pass reduces the range by one because the end is sorted
-            for i from startIndex to endIndex - pass - 1
-                // Use comparator to decide order
-                // If comparator(arr[i], arr[i+1]) > 0 then arr[i] should come after arr[i+1]
-                if this.comparator(arr[i], arr[i + 1]) > 0
-                    // Swap out-of-order elements
-                    this.swap(arr, i, i + 1)
-                    swapped = true
-
-            // If no swaps occurred, the list is sorted; break early
-            if not swapped
-                break
-
-        return arr
+END CLASS
